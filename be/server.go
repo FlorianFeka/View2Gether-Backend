@@ -18,12 +18,12 @@ func main() {
 		log.Fatal(err)
 	}
 	server.OnConnect("/", func(s socketio.Conn) error {
-
+		s.Emit("test", "Testdata");
 		server.JoinRoom("", "test", s)
 
-		fmt.Println("connected ID:", s.ID())
-		fmt.Println("connected ROOMS:", s.Rooms())
-		fmt.Println("connected URL:", s.URL())
+		// fmt.Println("connected ID:", s.ID())
+		// fmt.Println("connected ROOMS:", s.Rooms())
+		// fmt.Println("connected URL:", s.URL())
 		return nil
 	})
 	server.OnEvent("/", "notice", func(s socketio.Conn, msg string) {
