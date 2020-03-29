@@ -8,8 +8,8 @@ import (
 	"github.com/googollee/go-socket.io"
 )
 
-func forEach(s socketio.Conn) {
-	s.Emit("The for each function called")
+func forEach(c socketio.Conn) {
+	c.Emit("test", "testForEach")
 }
 
 func main() {
@@ -20,6 +20,8 @@ func main() {
 	server.OnConnect("/", func(s socketio.Conn) error {
 		s.Emit("test", "Testdata");
 		server.JoinRoom("", "test", s)
+		server.BroadcastToRoom("", "test", "The test for the broadcast.")
+		server.ForEach("", "test", forEach)
 
 		// fmt.Println("connected ID:", s.ID())
 		// fmt.Println("connected ROOMS:", s.Rooms())
@@ -27,7 +29,7 @@ func main() {
 		return nil
 	})
 	server.OnEvent("/", "notice", func(s socketio.Conn, msg string) {
-		server.ForEach("" ,"test", forEach)
+		// server.ForEach("" ,"test", forEach)
 		fmt.Println("notice:", msg)
 		s.Emit("reply", "have "+msg)
 	})

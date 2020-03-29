@@ -6,4 +6,8 @@ socket.on("test", function (data) {
 
     console.log(data);
 })
-console.log("try it")
+socket.on("broadcastTest", function (data) {
+    console.log("Broadcast test:");
+    console.log(data);
+})
+console.log("Try it");
