@@ -10,5 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "socket.io-client": "^2.3.0"
+  },
+  "devDependencies": {
+    "readline-sync": "^1.4.10"
   }
 }
