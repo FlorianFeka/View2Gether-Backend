@@ -8,37 +8,35 @@ import (
 	"github.com/googollee/go-socket.io"
 )
 
-func forEach(c socketio.Conn) {
-	c.Emit("test", "testForEach")
-}
-
 func main() {
 	server, err := socketio.NewServer(nil)
 	if err != nil {
 		log.Fatal(err)
 	}
-	server.OnConnect("/", func(s socketio.Conn) error {
-		s.Emit("test", "Testdata");
-		server.JoinRoom("", "test", s)
-		server.BroadcastToRoom("", "test", "The test for the broadcast.")
-		server.ForEach("", "test", forEach)
 
-		// fmt.Println("connected ID:", s.ID())
-		// fmt.Println("connected ROOMS:", s.Rooms())
-		// fmt.Println("connected URL:", s.URL())
+	server.OnConnect("/", func(s socketio.Conn) error {
+		fmt.Println("Connected: ", s.ID())
 		return nil
 	})
-	server.OnEvent("/", "notice", func(s socketio.Conn, msg string) {
-		// server.ForEach("" ,"test", forEach)
-		fmt.Println("notice:", msg)
-		s.Emit("reply", "have "+msg)
+
+	server.OnEvent("/", "joinRoom", func(s socketio.Conn, room string) {
+		server.JoinRoom("", room, s)
+		fmt.Println("Joined Room: ", room)
+		fmt.Println("Rooms: ", s.Rooms())
 	})
+
+	server.OnEvent("/", "sendCommandToRoom", func(s socketio.Conn, room, command string) {
+		server.BroadcastToRoom("", room, command)
+	})
+
 	server.OnError("/", func(s socketio.Conn, e error) {
-		fmt.Println("meet error:", e)
+		fmt.Println("Error: ", e)
 	})
+
 	server.OnDisconnect("/", func(s socketio.Conn, reason string) {
-		fmt.Println("closed", reason)
+		fmt.Println("Closed: ", reason)
 	})
+
 	go server.Serve()
 	defer server.Close()
 
