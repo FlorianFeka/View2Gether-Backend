@@ -21,6 +21,7 @@ func main() {
 
 	server.OnEvent("/", "joinRoom", func(s socketio.Conn, room string) {
 		server.JoinRoom("", room, s)
+		fmt.Println("ID: ", s.ID())
 		fmt.Println("Joined Room: ", room)
 		fmt.Println("Rooms: ", s.Rooms())
 	})
