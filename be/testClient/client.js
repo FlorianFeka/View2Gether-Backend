@@ -16,10 +16,12 @@ function sendCommandToRoom(command) {
     socket.emit('sendCommandToRoom', '1234', command);
 }
 
-socket.on('test_command', function() {
+socket.on('command', function (data) {
     console.log('Broadcast #test command# received');
+    console.log(data);
 });
 
-socket.on('play_command', function() {
+socket.on('command', function (data) {
     console.log('Broadcast #play command# received');
+    console.log(data);
 });

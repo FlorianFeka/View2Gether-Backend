@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/googollee/go-socket.io"
+	socketio "github.com/googollee/go-socket.io"
 )
 
 func main() {
@@ -27,7 +27,7 @@ func main() {
 	})
 
 	server.OnEvent("/", "sendCommandToRoom", func(s socketio.Conn, room, command string) {
-		server.BroadcastToRoom("", room, command)
+		server.BroadcastToRoom("", room, "command", command)
 	})
 
 	server.OnError("/", func(s socketio.Conn, e error) {
