@@ -1,24 +1,25 @@
-var io = require('socket.io')(8000);
+var io = require("socket.io")(8000);
 
-io.on('connection', (socket) => {
-    socket.on('joinRoom', (roomId) => {
-        const timestamp = new Date();
-        console.log(
-            `[server.js] ${timestamp.toISOString()} Join Room: ${roomId}`
-        );
-        socket.join(roomId);
-    });
+io.on("connection", (socket) => {
+  socket.on("joinRoom", (roomId) => {
+    const timestamp = new Date();
+    console.log(`[server.js] ${timestamp.toISOString()} Join Room: 
+    ${roomId}`);
+    socket.join(roomId);
+  });
 
-    socket.on('sendCommandToRoom', (room, command) => {
-        const timestamp = new Date();
-        console.log(
-            `[server.js] ${timestamp.toISOString()} command sent: ${JSON.stringify(
-                command,
-                null,
-                4
-            )}`
-        );
+  socket.on("getInfo", (roomId, info) => {
+    const timestamp = new Date();
+    console.log(`[server.js] ${timestamp.toISOString()} Get Info`);
+  });
 
-        io.to(room).emit('command', command);
-    });
+  socket.on("sendCommandToRoom", (room, command) => {
+    const timestamp = new Date();
+    console.log(
+      `[server.js] ${timestamp.toISOString()} Command Sent: 
+      ${JSON.stringify(command, null, 4)}`
+    );
+
+    io.to(room).emit("command", command);
+  });
 });
